@@ -1,0 +1,117 @@
+{
+  "categories": [
+    { "name": "Orthopedic", "icon": "/assets/nutra.png" },
+    { "name": "Rahablitation & Mobility", "icon": "/assets/personal-care.png" },
+    { "name": "Hospital Furniture", "icon": "/assets/herbal.png" },
+    { "name": "silicon products", "icon": "/assets/dr-vet.png" },
+    { "name": "Wellness Product", "icon": "/assets/mother-child.png" }
+  ],
+  "products": {
+    "Orthopedic": [
+      {
+        "name": "Cervical Pillow",
+        "price": 112,
+        "originalPrice": 139,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png"
+      },
+      {
+        "name": "Cervical Traction Kit",
+        "price": 85,
+        "originalPrice": 95,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Traction_kit.png"
+      },
+      {
+        "name": "Hard Cervical Collar",
+        "price": 85,
+        "originalPrice": 95,
+        "image": "/assets/caretex-products/Cervical_Aids/Hard_Cervical_Collar.png"
+      },
+      {
+        "name": "Head Holder",
+        "price": 85,
+        "originalPrice": 95,
+        "image": "/assets/caretex-products/Cervical_Aids/Head_Holder.png"
+      },
+      {
+        "name": "Philadelphia Collar",
+        "price": 85,
+        "originalPrice": 95,
+        "image": "/assets/caretex-products/Cervical_Aids/Philadelphia_Collar.png"
+      },
+      {
+        "name": "Sof Cervical Collar Deluxe",
+        "price": 85,
+        "originalPrice": 95,
+        "image": "/assets/caretex-products/Cervical_Aids/Sof_Cervical_Collar_Deluxe.png"
+      },
+      {
+        "name": "Soft Cervical Collar Pedia",
+        "price": 85,
+        "originalPrice": 95,
+        "image": "/assets/caretex-products/Cervical_Aids/Soft_Cervical_Collar_Pedia.png"
+      },
+      {
+        "name": "Softy Cervical Collar Special",
+        "price": 85,
+        "originalPrice": 95,
+        "image": "/assets/caretex-products/Cervical_Aids/Softy_Cervical_Collar_Special.png"
+      }
+    ],
+    "Rahablitation & Mobility": [
+      {
+        "name": "Body Lotion",
+        "price": 150,
+        "originalPrice": 180,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png"
+      },
+      {
+        "name": "Herbal Shampoo",
+        "price": 120,
+        "originalPrice": 150,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png"
+      }
+    ],
+    "Hospital Furniture": [
+      {
+        "name": "Body Lotion",
+        "price": 150,
+        "originalPrice": 180,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png"
+      },
+      {
+        "name": "Herbal Shampoo",
+        "price": 120,
+        "originalPrice": 150,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png"
+      }
+    ],
+    "silicon products": [
+      {
+        "name": "Body Lotion",
+        "price": 150,
+        "originalPrice": 180,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png"
+      },
+      {
+        "name": "Herbal Shampoo",
+        "price": 120,
+        "originalPrice": 150,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png"
+      }
+    ],
+    "Wellness Product": [
+      {
+        "name": "Body Lotion",
+        "price": 150,
+        "originalPrice": 180,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png"
+      },
+      {
+        "name": "Herbal Shampoo",
+        "price": 120,
+        "originalPrice": 150,
+        "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png"
+      }
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "categories": [
+    {
+      "name": "Orthopedic",
+      "icon": "/assets/nutra.png",
+      "subcategories": [
+        "Cervical Aids",
+        "Shoulder Arm and Clavicle Aids",
+        "Wrist and Forearm Aids",
+        "Chest and Rib Aids",
+        "Back Splints",
+        "Abdominal Support",
+        "Knee Support",
+        "Ankle Supports",
+        "Finger Splints",
+        "Foot Splints"
+      ]
+    },
+    {
+      "name": "Rehabilitation & Mobility",
+      "icon": "/assets/personal-care.png",
+      "subcategories": ["General Aids"]
+    },
+    {
+      "name": "Hospital Furniture",
+      "icon": "/assets/herbal.png",
+      "subcategories": ["Beds", "Chairs", "Tables"]
+    },
+    {
+      "name": "Silicon Products",
+      "icon": "/assets/dr-vet.png",
+      "subcategories": ["Silicon Splints", "Orthopedic Silicon"]
+    },
+    {
+      "name": "Wellness Product",
+      "icon": "/assets/mother-child.png",
+      "subcategories": ["Skin Care", "Hair Care"]
+    }
+  ],
+  "products": {
+    "Orthopedic": {
+      "Cervical Aids": [
+        {
+          "name": "Cervical Pillow",
+          "price": 112,
+          "originalPrice": 139,
+          "image": "/assets/caretex-products/Cervical_Aids/Cervical_Pillow.png",
+          "url": "/orthopedic/cervical-aids/cervical-pillow"
+        }
+      ],
+      "Shoulder, Arm and Clavicle Aids": [
+        {
+          "name": "Arm Immobilizer",
+          "price": 112,
+          "originalPrice": 139,
+          "image": "/assets/caretex-products/Shoulder_Arm_Clavicle_Aids/Arm_Immobilizer.png",
+          "url": "/orthopedic/shoulder-arm-and-clavicle-aids/arm-immobilizer"
+        }
+      ]
+    },
+    "Rehabilitation & Mobility": {
+      "General Aids": [
+        {
+          "name": "Body Lotion",
+          "price": 150,
+          "originalPrice": 180,
+          "image": "/assets/caretex-products/Rehabilitation/Body_Lotion.png",
+          "url": "/rehabilitation-mobility/general-aids/body-lotion"
+        },
+        {
+          "name": "Herbal Shampoo",
+          "price": 120,
+          "originalPrice": 150,
+          "image": "/assets/caretex-products/Rehabilitation/Herbal_Shampoo.png",
+          "url": "/rehabilitation-mobility/general-aids/herbal-shampoo"
+        }
+      ]
+    },
+    "Hospital Furniture": {
+      "Beds": [
+        {
+          "name": "Hospital Bed",
+          "price": 500,
+          "originalPrice": 600,
+          "image": "/assets/caretex-products/Hospital_Furniture/Hospital_Bed.png",
+          "url": "/hospital-furniture/beds/hospital-bed"
+        }
+      ],
+      "Chairs": [
+        {
+          "name": "Wheelchair",
+          "price": 300,
+          "originalPrice": 350,
+          "image": "/assets/caretex-products/Hospital_Furniture/Wheelchair.png",
+          "url": "/hospital-furniture/chairs/wheelchair"
+        }
+      ]
+    },
+    "Silicon Products": {
+      "Silicon Splints": [
+        {
+          "name": "Silicone Heel Pad",
+          "price": 90,
+          "originalPrice": 110,
+          "image": "/assets/caretex-products/Silicon/Silicone_Heel_Pad.png",
+          "url": "/silicon-products/silicon-splints/silicone-heel-pad"
+        }
+      ]
+    },
+    "Wellness Product": {
+      "Skin Care": [
+        {
+          "name": "Moisturizer",
+          "price": 200,
+          "originalPrice": 250,
+          "image": "/assets/caretex-products/Wellness/Moisturizer.png",
+          "url": "/wellness-product/skin-care/moisturizer"
+        }
+      ],
+      "Hair Care": [
+        {
+          "name": "Shampoo",
+          "price": 150,
+          "originalPrice": 180,
+          "image": "/assets/caretex-products/Wellness/Shampoo.png",
+          "url": "/wellness-product/hair-care/shampoo"
+        }
+      ]
+    }
+  }
+}

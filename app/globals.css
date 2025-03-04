@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-mulish: "Mulish", sans-serif;
+}
+
+body {
+  font-family: var(--font-mulish);
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+@layer base {
+  :root {
+    --radius: 0.5rem;
+  }
+}
+
+.content-inner-2 {
+  padding-top: 100px;
+  padding-bottom: 0;
+}
+.content-inner-3 {
+  padding-top: 70px;
+  padding-bottom: 40px;
+}
+.bg-gradient-to-r {
+  background-image: linear-gradient(to right, #69292d, #373329);
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slideIn {
+  animation: slideIn 0.3s ease-out;
+}
+
+.color-container {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+}
+
+.color-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1px solid #ddd; /* Optional border */
+}
