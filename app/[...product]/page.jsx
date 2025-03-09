@@ -6,17 +6,24 @@ import { useParams, useSearchParams } from "next/navigation";
 import Navbar from "../components/common/Navbar/Navbar";
 import { supabaseClient } from "@/utlis/SupabaseClient";
 import { AiFillEye } from "react-icons/ai";
+import Example from "../components/common/Testing/Test";
 
 function PageContent() {
   const params = useParams();
   const { product } = params;
   const searchParams = useSearchParams();
-  const subId = searchParams.get("subId"); // ✅ Get subId from URL params
+  const subId = searchParams.get("subId");
   const [products, setProducts] = useState([]);
-  const [priceRange, setPriceRange] = useState({ min: 40, max: 346 });
+  const [filteredProducts, setFilteredProducts] = useState([]);
+    const [selectedProduct, setSelectedProduct] = useState(null);
+  const [filters, setFilters] = useState({
+    priceRange: { min: 0, max: 346 },
+    colors: [],
+    sizes: [],
+  });
 
   useEffect(() => {
-    if (!subId) return; // ✅ Prevent running effect if subId is null
+    if (!subId) return;
 
     const fetchCategories = async () => {
       try {
@@ -30,6 +37,7 @@ function PageContent() {
           console.error("Failed to fetch categories", error);
         } else {
           setProducts(data);
+          setFilteredProducts(data); // Initialize filtered products with all products
         }
       } catch (error) {
         console.error("Unexpected error:", error);
@@ -39,15 +47,92 @@ function PageContent() {
     fetchCategories();
   }, [subId]);
 
-  const handlePriceChange = (e) => {
-    const { name, value } = e.target;
-    setPriceRange((prev) => ({
-      ...prev,
-      [name]: parseInt(value, 10),
-    }));
+  useEffect(() => {
+    applyFilters();
+  }, [filters, products]);
+
+  const applyFilters = () => {
+    let filtered = products.filter((product) => {
+      const withinPriceRange =
+        product.price >= filters.priceRange.min &&
+        product.price <= filters.priceRange.max;
+
+      const matchesColor =
+        filters.colors.length === 0 ||
+        filters.colors.some((color) => product.color?.includes(color));
+
+      const matchesSize =
+        filters.sizes.length === 0 ||
+        filters.sizes.some((size) => product.size?.includes(size));
+
+      return withinPriceRange && matchesColor && matchesSize;
+    });
+
+    setFilteredProducts(filtered);
   };
 
-  function SidebarFilter() {
+  const handleFilterChange = (newFilters) => {
+    setFilters(newFilters);
+  };
+
+  const handleQuickView = (product) => {
+    setSelectedProduct(product);
+  };
+
+  function SidebarFilter({ onFilterChange }) {
+    const [priceRange, setPriceRange] = useState({ min: 0, max: 346 });
+    const [selectedColors, setSelectedColors] = useState([]);
+    const [selectedSizes, setSelectedSizes] = useState([]);
+
+    const handlePriceChange = (e) => {
+      const { name, value } = e.target;
+      const newValue = parseInt(value, 10);
+
+      const newPriceRange = {
+        min:
+          name === "min"
+            ? Math.min(newValue, priceRange.max - 1)
+            : priceRange.min,
+        max:
+          name === "max"
+            ? Math.max(newValue, priceRange.min + 1)
+            : priceRange.max,
+      };
+
+      setPriceRange(newPriceRange);
+      onFilterChange({
+        priceRange: newPriceRange,
+        colors: selectedColors,
+        sizes: selectedSizes,
+      });
+    };
+
+    const handleColorChange = (color) => {
+      const newSelectedColors = selectedColors.includes(color)
+        ? selectedColors.filter((c) => c !== color)
+        : [...selectedColors, color];
+
+      setSelectedColors(newSelectedColors);
+      onFilterChange({
+        priceRange,
+        colors: newSelectedColors,
+        sizes: selectedSizes,
+      });
+    };
+
+    const handleSizeChange = (size) => {
+      const newSelectedSizes = selectedSizes.includes(size)
+        ? selectedSizes.filter((s) => s !== size)
+        : [...selectedSizes, size];
+
+      setSelectedSizes(newSelectedSizes);
+      onFilterChange({
+        priceRange,
+        colors: selectedColors,
+        sizes: newSelectedSizes,
+      });
+    };
+
     return (
       <div className="sticky top-4 h-[calc(100vh-2rem)] overflow-y-auto p-6 bg-white shadow-lg rounded-lg z-10">
         {/* Filter Header */}
@@ -57,7 +142,7 @@ function PageContent() {
 
         {/* Category Filter */}
         <div className="mb-8">
-          <h3 className="text-lg font-semibold mb-4">Category</h3>
+          <h3 className="text-lg font-semibold mb-4">Product Search.</h3>
           <input
             type="text"
             placeholder="Search Product"
@@ -68,54 +153,48 @@ function PageContent() {
         {/* Price Filter */}
         <div className="mb-8">
           <h3 className="text-lg font-semibold mb-4">Price</h3>
-          <div className="space-y-4">
-            <div className="relative w-full">
-              <input
-                type="range"
-                name="min"
-                min="40"
-                max="346"
-                value={priceRange.min}
-                onChange={handlePriceChange}
-                className="absolute w-full h-1.5 bg-gray-200 rounded-full appearance-none"
-              />
-              <input
-                type="range"
-                name="max"
-                min="40"
-                max="346"
-                value={priceRange.max}
-                onChange={handlePriceChange}
-                className="absolute w-full h-1.5 bg-blue-600 rounded-full appearance-none"
-              />
-            </div>
-            <div className="flex justify-between text-sm">
-              <span>Min Price: ${priceRange.min}</span>
-              <span>Max Price: ${priceRange.max}</span>
-            </div>
+          <div className="flex justify-between text-sm">
+            <span>₹{priceRange.min}</span>
+            <span>₹{priceRange.max}</span>
+          </div>
+          <div className="relative w-full mt-2">
+            <input
+              type="range"
+              name="min"
+              min="0"
+              max="346"
+              value={priceRange.min}
+              onChange={handlePriceChange}
+              className="absolute w-full cursor-pointer z-10"
+            />
+            <input
+              type="range"
+              name="max"
+              min="0"
+              max="346"
+              value={priceRange.max}
+              onChange={handlePriceChange}
+              className="absolute w-full cursor-pointer z-20"
+            />
           </div>
         </div>
 
         {/* Color Filter */}
         <div className="mb-8">
           <h3 className="text-lg font-semibold mb-4">Color</h3>
-          <div className="grid grid-cols-3 gap-4">
-            {[
-              "ClassicCopri",
-              "DopperCoot",
-              "Comfy Leading*",
-              "DenimDream",
-              "ShidBits Dress",
-              "ShidBits Dress",
-              "GlomPants",
-            ].map((color, index) => (
-              <div
-                key={index}
-                className="p-2 border border-gray-300 rounded-lg text-center cursor-pointer hover:bg-gray-100"
-              >
-                {color}
-              </div>
-            ))}
+          <div className="flex flex-wrap gap-2">
+            {["#FF5733", "#33FF57", "#3357FF", "#FFC300", "#8E44AD"].map(
+              (color, index) => (
+                <button
+                  key={index}
+                  style={{ backgroundColor: color }}
+                  className={`w-8 h-8 rounded-full border-2 border-white shadow-md hover:scale-110 transition-transform ${
+                    selectedColors.includes(color) ? "ring-2 ring-blue-500" : ""
+                  }`}
+                  onClick={() => handleColorChange(color)}
+                />
+              )
+            )}
           </div>
         </div>
 
@@ -123,88 +202,96 @@ function PageContent() {
         <div className="mb-8">
           <h3 className="text-lg font-semibold mb-4">Size</h3>
           <div className="flex flex-wrap gap-2">
-            {["4", "6", "8", "10", "12", "14", "16", "18", "20"].map(
-              (size, index) => (
-                <div
-                  key={index}
-                  className="w-10 h-10 flex items-center justify-center border border-gray-300 rounded-lg cursor-pointer hover:bg-gray-100"
-                >
-                  {size}
-                </div>
-              )
-            )}
-          </div>
-        </div>
-
-        {/* Category List */}
-        <div className="mb-8">
-          <h3 className="text-lg font-semibold mb-4">Category</h3>
-          <ul className="space-y-2">
-            {[
-              { name: "Dresses", count: 10 },
-              { name: "Top & Blouses", count: 5 },
-              { name: "Boots", count: 17 },
-            ].map((category, index) => (
-              <li key={index} className="flex justify-between text-sm">
-                <span>{category.name}</span>
-                <span>({category.count})</span>
-              </li>
+            {["S", "M", "L", "XL", "XXL"].map((size, index) => (
+              <button
+                key={index}
+                className={`px-3 py-1 border border-gray-300 rounded-md hover:bg-gray-200 transition ${
+                  selectedSizes.includes(size) ? "bg-gray-200" : ""
+                }`}
+                onClick={() => handleSizeChange(size)}
+              >
+                {size}
+              </button>
             ))}
-          </ul>
+          </div>
         </div>
       </div>
     );
   }
-
   const ProductListing = () => {
     return (
-      <div className="container mx-auto px-4 lg:px-20 py-10">
-        {products.length === 0 ? (
-          // If products array is empty, show "No data found" message
-          <div className="text-center py-10">
-            <h2 className="text-xl font-semibold">No Data Found</h2>
-            <p className="text-gray-500">
-              Sorry, we couldn't find any products matching your criteria.
-            </p>
-          </div>
-        ) : (
-          <ul
-            id="masonry2"
-            className="row relative grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+      <div className="w-full p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products?.map((product, index) => (
+          <div
+            key={index}
+            className="group flex flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
           >
-            {products.map((product) => (
-              <li
-                className="relative group w-full h-[400px] flex flex-col justify-between"
-                key={product.id}
-              >
-                <div className="relative overflow-hidden rounded-3xl duration-500 h-full border-2 border-[#6b2a2e]">
-                  <img
-                    src={product.image_url}
-                    alt={product.name || "Product Image"}
-                    className="w-full h-full object-cover rounded-3xl duration-500 group-hover:-translate-y-5"
-                  />
-                  <div className="absolute bottom-0 left-0 w-full flex flex-col items-end gap-2 p-4 sm:px-2 duration-200">
-                    <a
-                      href="javascript:void(0);"
-                      className="btn absolute left-1/2 -translate-x-1/2 -bottom-16 group-hover:bottom-[0px] bg-secondary text-white rounded-full py-3 px-6 text-sm font-medium leading-[1.2] border-4 border-[#fffaf3] bg-[#000] hover:bg-primary duration-500 w-[150px]"
+            <a
+              className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl"
+              href="#"
+            >
+              <img
+                className="w-full h-full object-cover rounded-3xl duration-500 group-hover:-translate-y-5"
+                src={product.image_url}
+                alt={product.product_title}
+              />
+            </a>
+            <div className="mt-4 px-5 pb-5">
+              <a href="#">
+                <h5 className="text-xl tracking-tight text-slate-900">
+                  {product.product_title}
+                </h5>
+              </a>
+              <div className="flex items-center mb-3">
+                <span className="text-lg font-medium text-slate-900 mr-2">
+                  Color:
+                </span>
+                <div className="flex space-x-2 mt-1">
+                  {product.color?.map((color, idx) => (
+                    <div
+                      key={idx}
+                      className="w-6 h-6 rounded-full"
+                      style={{
+                        backgroundColor: color,
+                        cursor: "pointer",
+                        border: "2px solid #fff",
+                      }}
+                    ></div>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center mb-3">
+                <span className="text-sm font-medium text-slate-900 mr-2">
+                  Size:
+                </span>
+                <div className="flex space-x-2">
+                  {product.size?.map((size, idx) => (
+                    <span
+                      key={idx}
+                      className="px-3 py-1 text-sm font-medium text-slate-900 border border-gray-300 rounded-full cursor-pointer hover:bg-gray-200"
                     >
-                      <i className="fa-solid fa-eye md:hidden block"></i>
-                      <span className="hidden md:block">Quick View</span>
-                    </a>
-                  </div>
+                      {size}
+                    </span>
+                  ))}
                 </div>
-                <div className="py-5 flex justify-between items-center">
-                  <h5 className="text-lg font-semibold capitalize">
-                    {/* <a href="shop-list.html">{product.name || "Product Name"}</a> */}
-                  </h5>
-                  <h5 className="text-lg font-semibold">
-                    {/* ${product.price || "0.00"} */}
-                  </h5>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
+              </div>
+
+              <div className="mt-2 mb-5 flex items-center justify-between">
+                <p>
+                  <span className="text-lg font-bold text-slate-900">
+                    MRP ₹ {product.price || "449"}
+                  </span>
+                </p>
+              </div>
+              <a
+                onClick={() => handleQuickView(product)}
+                className="flex items-center justify-center rounded-md bg-slate-900 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-blue-300 cursor-pointer"
+              >
+                Quick View
+              </a>
+            </div>
+          </div>
+        ))}
       </div>
     );
   };
@@ -217,17 +304,27 @@ function PageContent() {
         backgroundImage={"/assets/slider4.jpg"}
         breadcrumbs={product}
       />
+
       <div className="flex">
         {/* Sidebar Filter */}
         <div className="w-1/4 p-4">
-          <SidebarFilter />
+          <SidebarFilter onFilterChange={handleFilterChange} />
         </div>
 
         {/* Product Listing */}
-        <div className="w-3/4 p-4">
-          <ProductListing />
-        </div>
+        <ProductListing
+          products={filteredProducts}
+          handleQuickView={handleQuickView}
+        />
       </div>
+
+      {selectedProduct && (
+        <Example
+          isOpen={!!selectedProduct}
+          data={selectedProduct} // Pass the selected product to the modal
+          onClose={() => setSelectedProduct(null)} // Close the modal
+        />
+      )}
 
       <Footer />
     </>
