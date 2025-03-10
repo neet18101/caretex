@@ -178,7 +178,7 @@ function Navbar() {
               <li>
                 <a
                   className="hover:text-[#f59f8b] text-black text-lg font-semibold"
-                  href="/about-us"
+                  href="/contact-us"
                 >
                   Contact Us
                 </a>
