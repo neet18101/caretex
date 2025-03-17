@@ -83,8 +83,6 @@ const ShopByCategory = () => {
     setProducts(products);
   };
 
-
-
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -121,7 +119,7 @@ const ShopByCategory = () => {
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-5"
         >
           {products &&
-            products?.map((product, index) => (
+            products?.slice(0, 12)?.map((product, index) => (
               <div
                 key={index}
                 className="bg-white shadow-lg rounded-lg p-4 text-center border-2 border-[#70292f] rounded-[3px_50px] shadow-[1px_1px_4px_#e58674] w-[250px] md:w-[300px]"
