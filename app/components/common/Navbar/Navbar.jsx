@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import { getCategoriesWithSubcategories } from "@/hooks/useAddCategory";
 import { supabaseClient } from "@/utlis/SupabaseClient";
 import Link from "next/link";
+import { FiMenu } from "react-icons/fi";
+import { AiOutlineClose } from "react-icons/ai";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // Sidebar state
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +40,12 @@ function Navbar() {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  // useEffect(() => {
+  //   if (!isSidebarOpen) {
+  //     document.getElementById("filter-sidebar").style.visibility = "hidden";
+  //   }
+  // }, [isSidebarOpen]);
 
   return (
     <>
@@ -209,6 +218,56 @@ function Navbar() {
                 />
               </svg>
             </a>
+
+            <button
+              className="lg:hidden text-2xl"
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              <FiMenu />
+            </button>
+          </div>
+          {/* Mobile Menu Button */}
+
+          {/* Sidebar Menu (Mobile) */}
+          <div
+            className={`fixed inset-0 bg-black transform ${
+              isSidebarOpen
+                ? "translate-x-0 top-[100] z-50 bg-[white]"
+                : "-translate-x-full"
+            } transition-transform w-3/4 max-w-sm bg-white p-6 shadow-lg`}
+          >
+            {/* Close Button */}
+            <button
+              className="absolute top-4 right-4 text-2xl"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <AiOutlineClose />
+            </button>
+
+            {/* Sidebar Links */}
+            <ul className="space-y-4 mt-8">
+              <li>
+                <a className="text-lg font-semibold text-black" href="/">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a
+                  className="text-lg font-semibold text-black"
+                  href="/about-us"
+                >
+                  About Us
+                </a>
+              </li>
+              <li>
+                <a
+                  className="text-lg font-semibold text-black"
+                  href="/contact-us"
+                >
+                  Contact Us
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

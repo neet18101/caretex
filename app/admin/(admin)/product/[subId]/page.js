@@ -121,13 +121,13 @@ function ProductPage() {
       setLoading(false);
       return;
     }
-    let imageUrl = selectedProduct.image_url;
+
+    let imageUrl = selectedProduct.image_url; // Keep existing image if not changed
     if (productImage) {
       const fileName = `${Date.now()}-${productImage.name}`;
-
       const { data: uploadData, error: uploadError } =
         await supabaseClient.storage
-          .from("assets") // Ensure the correct bucket name
+          .from("assets") // Ensure correct bucket name
           .upload(`images/${fileName}`, productImage, {
             cacheControl: "3600",
             upsert: false,
@@ -139,32 +139,51 @@ function ProductPage() {
         setLoading(false);
         return;
       }
+
       // Construct new image URL
       imageUrl = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/assets/images/${fileName}`;
     }
+
+    // ✅ Fix: Ensure `color` and `size` are strings before using `.split()`
+    const formattedColor = Array.isArray(productColor)
+      ? productColor // Already an array
+      : typeof productColor === "string"
+      ? productColor.split(",").map((c) => c.trim())
+      : [];
+
+    const formattedSize = Array.isArray(productSize)
+      ? productSize // Already an array
+      : typeof productSize === "string"
+      ? productSize.split(",").map((s) => s.trim())
+      : [];
+
     // Prepare updated product data
     const updatedProduct = {
-      product_title: selectedProduct.product_title,
+      product_title: productTitle,
       product_description: productDescription,
       image_url: imageUrl,
-      color: productColor,
-      size: productSize,
+      color: formattedColor, // ✅ Fix applied
+      size: formattedSize, // ✅ Fix applied
       price: productPrice ? parseFloat(productPrice) : 0,
+      sub_cate_id: subId, // ✅ Ensure sub-category remains linked
     };
+
     // Update product in Supabase
     const { data, error } = await supabaseClient
       .from("products")
       .update(updatedProduct)
       .eq("id", selectedProduct.id);
+
     if (error) {
       toast.error("Error updating product.");
       console.error("Supabase Update Error:", error);
     } else {
       toast.success("Product updated successfully!");
-      console.log("Updated Product:", data);
-      // Refresh product list
+
+      // ✅ Refresh the product list
       fetchProducts(subId);
-      // Close modal
+
+      // ✅ Close the modal after updating
       setEditProductModalOpen(false);
     }
 
