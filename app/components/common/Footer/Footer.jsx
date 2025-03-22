@@ -23,8 +23,8 @@ function Footer() {
                     <nav className="flex flex-col space-y-2">
                         <Link href="/about-us" className="hover:text-[#f59f8b]">About Us</Link>
                         <Link href="/products" className="hover:text-[#f59f8b]">Our Products</Link>
-                        <Link href="/customer-reviews" className="hover:text-[#f59f8b]">Customer Reviews</Link>
-                        <Link href="/blog" className="hover:text-[#f59f8b]">Health Blog</Link>
+                        {/* <Link href="/customer-reviews" className="hover:text-[#f59f8b]">Customer Reviews</Link> */}
+                        {/* <Link href="/blog" className="hover:text-[#f59f8b]">Health Blog</Link> */}
                         <Link href="/contact-us" className="hover:text-[#f59f8b]">Contact Us</Link>
                     </nav>
                 </div>
