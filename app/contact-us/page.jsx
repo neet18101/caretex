@@ -4,10 +4,12 @@ import PageHeader from "../components/common/PageHeader/PageHeader";
 import AboutSection from "../components/common/HomeSection/AboutSection";
 import MapSection from "../components/common/HomeSection/MapSection";
 import Footer from "../components/common/Footer/Footer";
+import Script from "next/script";
 
 function page() {
   return (
     <>
+      <Script src="https://queuemaster.lambetech.com/embed-queue-script.js"></Script>
       <Navbar />
       <PageHeader
         title={"Contact us"}

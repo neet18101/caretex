@@ -33,6 +33,9 @@ export default function RootLayout({ children }) {
         {/* <Navbar /> */}
         {children}
         {/* <Footer /> */}
+
+
+        <script src="https://queuemaster.lambetech.com/embed-script.js?target_url=https://caretex.vercel.app/about-us&queue_url=https://caretex.vercel.app/contact-us"></script>
       </body>
     </html>
   );
